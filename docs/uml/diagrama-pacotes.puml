@@ -1,0 +1,52 @@
+@startuml diagrama-pacotes
+title Diagrama de Pacotes - solidexercicio10
+
+package "solidexercicio10" {
+  class Main
+}
+
+package "solidexercicio10.service" {
+  class JogoService
+}
+
+package "solidexercicio10.model" {
+  class Missao
+  class Nave
+  class Passageiro
+  class Asteroide
+  class Inimigo
+  class Dificuldade
+}
+
+package "solidexercicio10.presentation" {
+  class MapaRenderer
+}
+
+package "solidexercicio10.repository" {
+  interface RankingRepository
+  class RankingService
+  class RankingEntry
+}
+
+Main --> "solidexercicio10.service"
+Main --> RankingRepository
+Main ..> RankingService : instancia
+
+"solidexercicio10.service" --> "solidexercicio10.model"
+"solidexercicio10.service" --> "solidexercicio10.presentation"
+"solidexercicio10.service" --> RankingRepository
+
+"solidexercicio10.presentation" --> "solidexercicio10.model"
+
+RankingService ..|> RankingRepository
+RankingService --> "solidexercicio10.model"
+RankingRepository --> RankingEntry
+
+note right of RankingRepository
+  O serviço (JogoService) depende apenas
+  do contrato RankingRepository, nunca da
+  implementação concreta RankingService.
+  Isso é o DIP em prática.
+end note
+
+@enduml

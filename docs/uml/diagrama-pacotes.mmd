@@ -1,0 +1,38 @@
+flowchart TB
+    subgraph P0["solidexercicio10"]
+        Main["Main"]
+    end
+
+    subgraph P1["solidexercicio10.service"]
+        JogoService["JogoService"]
+    end
+
+    subgraph P2["solidexercicio10.model"]
+        Model["Missao, Nave, Passageiro,\nAsteroide, Inimigo, Dificuldade..."]
+    end
+
+    subgraph P3["solidexercicio10.presentation"]
+        MapaRenderer["MapaRenderer"]
+    end
+
+    subgraph P4["solidexercicio10.repository"]
+        RankingRepository["<<interface>>\nRankingRepository"]
+        RankingService["RankingService"]
+        RankingEntry["RankingEntry"]
+    end
+
+    Main --> JogoService
+    Main --> RankingRepository
+    Main -.instancia.-> RankingService
+
+    JogoService --> Model
+    JogoService --> MapaRenderer
+    JogoService --> RankingRepository
+
+    MapaRenderer --> Model
+
+    RankingService -. implementa .-> RankingRepository
+    RankingService --> Model
+    RankingRepository --> RankingEntry
+
+    style RankingRepository fill:#eef,stroke:#336,stroke-width:2px

@@ -1,0 +1,109 @@
+classDiagram
+    direction TB
+
+    class Posicionavel {
+        <<interface>>
+        +getX() int
+        +getY() int
+    }
+
+    class Movel {
+        <<interface>>
+        +mover(dx int, dy int) void
+    }
+
+    class EntidadeMapa {
+        <<abstract>>
+        #x int
+        #y int
+        +getX() int
+        +getY() int
+        +getSimbolo()* String
+    }
+
+    class Passageiro {
+        <<abstract>>
+        -nome String
+        -tipo String
+        +getNome() String
+        +getTipo() String
+        +getPontuacao()* int
+    }
+
+    class Professor {
+        +getPontuacao() int
+        +getSimbolo() String
+    }
+
+    class Engenheiro {
+        +getPontuacao() int
+        +getSimbolo() String
+    }
+
+    class Astronauta {
+        +getPontuacao() int
+        +getSimbolo() String
+    }
+
+    class Asteroide {
+        +getSimbolo() String
+    }
+
+    class Inimigo {
+        +mover(dx int, dy int) void
+        +getSimbolo() String
+    }
+
+    class Nave {
+        -nome String
+        -capacidade int
+        -vidas int
+        -passageiros List~Passageiro~
+        +embarcar(p Passageiro) boolean
+        +perderVida() void
+        +moverComLimites(cmd char, minX int, maxX int, minY int, maxY int) void
+        +mover(dx int, dy int) void
+        +getSimbolo() String
+        +getVidas() int
+        +getCapacidade() int
+    }
+
+    class Dificuldade {
+        <<enumeration>>
+        FACIL
+        MEDIO
+        DIFICIL
+        +deString(valor String) Dificuldade
+    }
+
+    class Missao {
+        -passageiros List~Passageiro~
+        -asteroides List~Asteroide~
+        -inimigos List~Inimigo~
+        +adicionarPassageiro(p Passageiro) void
+        +adicionarAsteroide(a Asteroide) void
+        +adicionarInimigo(i Inimigo) void
+        +passagemNaPosicao() Passageiro
+        +embarcarPassageiroNaPosicao() boolean
+        +moverInimigos() void
+        +verificaColisao() boolean
+        +todosEmbarcados() boolean
+    }
+
+    Posicionavel <|.. EntidadeMapa
+    EntidadeMapa <|-- Passageiro
+    EntidadeMapa <|-- Asteroide
+    EntidadeMapa <|-- Inimigo
+    EntidadeMapa <|-- Nave
+    Movel <|.. Inimigo
+    Movel <|.. Nave
+    Passageiro <|-- Professor
+    Passageiro <|-- Engenheiro
+    Passageiro <|-- Astronauta
+
+    Missao "1" *-- "1" Nave : possui
+    Missao "1" o-- "0..*" Passageiro : aguarda resgate
+    Missao "1" o-- "0..*" Asteroide : contém
+    Missao "1" o-- "0..*" Inimigo : contém
+    Nave "1" o-- "0..*" Passageiro : transporta
+    Missao ..> Dificuldade : usa
